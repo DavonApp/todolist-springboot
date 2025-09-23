@@ -128,7 +128,7 @@ public class TaskService {
                 existingTask.setCategory(updatedTask.getCategory());
             }
             if(updatedTask.getPriority() != null){
-                existingTask.setPriority(updatedTask.getPriority());
+                existingTask.setPriority(Priority.valueOf(updatedTask.getPriority().name().toUpperCase()));
             }
             if(updatedTask.getDueDate() != null){
                 existingTask.setDueDate(updatedTask.getDueDate());
