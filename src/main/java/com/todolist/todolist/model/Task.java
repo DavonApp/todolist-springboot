@@ -21,6 +21,7 @@ public class Task {
     private int id;
 
     private String title;
+    private String description;
     private boolean isCompleted;
     private LocalDate dueDate;
     private String category;
@@ -40,24 +41,60 @@ public class Task {
     public Task() {}
 
     // Getters and Setters
-    public int getId() { return id; }
+    public int getId() { 
+        return id; 
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public String getTitle() { 
+        return title; 
+    }
+    public void setTitle(String title) { 
+        this.title = title; 
+    }
 
-    public boolean getIsCompleted() { return isCompleted; }
-    public void setCompletion(boolean completed) { this.isCompleted = completed; }
-    public void markAsCompleted() { this.isCompleted = true; }
+    public String getDescription() {
+        return description;
+    }
 
-    public LocalDate getDueDate() { return dueDate; }
-    public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
+    public boolean getIsCompleted() { 
+        return isCompleted; 
+    }
+    public void setCompletion(boolean completed) { 
+        this.isCompleted = completed; 
+    }
+    public void markAsCompleted() { 
+        this.isCompleted = true; 
+    }
 
-    public Priority getPriority() { return priority; }
-    public void setPriority(Priority priority) { this.priority = priority; }
+    public LocalDate getDueDate() { 
+        return dueDate; 
+    }
+    public void setDueDate(LocalDate dueDate) { 
+        this.dueDate = dueDate; 
+    }
 
-    public User getUser(){ return user; }
-    public void setUser(User user){ this.user = user; }
+    public String getCategory() { 
+        return category; 
+    }
+    public void setCategory(String category) { 
+        this.category = category; 
+    }
+
+    public Priority getPriority() { 
+        return priority; 
+    }
+    public void setPriority(Priority priority) { 
+        this.priority = priority; 
+    }
+
+    public User getUser(){ 
+        return user; 
+    }
+    public void setUser(User user){ 
+        this.user = user; 
+    }
 }
