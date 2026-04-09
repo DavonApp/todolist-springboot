@@ -36,7 +36,6 @@ public class Task {
     public Task(String title) {
         this.title = title;
         this.isCompleted = false;
-        this.priority = Priority.MEDIUM;
     }
 
     // Default constructor 
