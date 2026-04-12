@@ -1,17 +1,12 @@
 package com.todolist.todolist.controller;
 
-import com.todolist.todolist.model.Task;
+
 import com.todolist.todolist.model.User;
-import com.todolist.todolist.model.Priority;
-import com.todolist.todolist.service.TaskService;
 import com.todolist.todolist.service.UserService;
-import com.todolist.todolist.repository.UserRepository;
+
 
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")
