@@ -3,7 +3,10 @@ package com.todolist.todolist.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,6 +32,7 @@ public class Task {
     private String category;
     private Priority priority;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn (name = "user_id")
     private User user;
 
