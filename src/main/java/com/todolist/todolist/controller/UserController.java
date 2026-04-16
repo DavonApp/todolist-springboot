@@ -54,7 +54,8 @@ public class UserController {
 
         return ResponseEntity.ok(Map.of(
             "name",  updated.getName()  != null ? updated.getName()  : "",
-            "email", updated.getEmail() != null ? updated.getEmail() : ""
+            "email", updated.getEmail() != null ? updated.getEmail() : "",
+            "lastChanged", user.getPasswordLastChanged() != null ? user.getPasswordLastChanged().toString() : "Never"
         ));
     }
     
