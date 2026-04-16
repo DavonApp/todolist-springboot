@@ -85,10 +85,11 @@ public class UserService {
 
         // Save new password
         user.setPassword(passwordEncoder.encode(newPassword));
-        userRepository.save(user);
-
+    
         // Set the update timestamp
         user.setPasswordLastChanged(LocalDateTime.now());
+
+        // Saves the user
         userRepository.save(user);
     }
 }
