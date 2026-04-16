@@ -4,12 +4,17 @@ package com.todolist.todolist.controller;
 import com.todolist.todolist.model.User;
 import com.todolist.todolist.service.UserService;
 
+import jakarta.servlet.http.HttpSession;
+
+import org.springframework.http.ResponseEntity;
+
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/user")
 public class UserController {
 
     private final UserService userService;
@@ -18,6 +23,41 @@ public class UserController {
     public UserController(UserService userService){
         this.userService = userService;
     }
+
+
+    // Returns current user's name + email
+    @GetMapping ("/profile")
+    public ResponseEntity<?> getProfile(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.status(401).body("Not logged in");
+        }
+
+        return ResponseEntity.ok(Map.of(
+            "name", user.getName() != null ? user.getName() : "",
+            "email", user.getEmail() != null ? user.getEmail() : ""
+        ));
+    }
+
+    // updates name and/or email
+    @PutMapping ("/profile")
+    public ResponseEntity<?> updateProfile(@RequestBody Map<String, String> body, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.status(401).body("Not logged in");
+        }
+
+        User updated = userService.updateProfile(user, body.get("name"), body.get("email"));
+
+        // Keeps session in sync with saved user
+        session.setAttribute("user", updated);
+
+        return ResponseEntity.ok(Map.of(
+            "name",  updated.getName()  != null ? updated.getName()  : "",
+            "email", updated.getEmail() != null ? updated.getEmail() : ""
+        ));
+    }  
+
 
     @PostMapping ("/register")
     public User registerUser (@RequestBody User userRequest){
