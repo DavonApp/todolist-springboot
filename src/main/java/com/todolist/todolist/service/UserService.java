@@ -58,4 +58,30 @@ public class UserService {
 
         return userRepository.save(user);
     }
+
+    public void changePassword(User user, String currentPassword, String newPassword) {
+
+        if (currentPassword == null || newPassword == null  || currentPassword.isBlank() || newPassword.isBlank()) {
+            throw new RuntimeException("All password fields are required.");
+        }
+
+        // Verify current password
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new RuntimeException("Current password is incorrect.");
+        }
+
+        // Minimum Length
+        if (newPassword.length() < 8) {
+            throw new RuntimeException("New password must be at least 8 characters.");
+        }
+
+        // Prevent same password reuse
+        if (passwordEncoder.matches(newPassword, user.getPassword())) {
+            throw new RuntimeException("New password must be different.");
+        }
+
+        // Save new password
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
 }
