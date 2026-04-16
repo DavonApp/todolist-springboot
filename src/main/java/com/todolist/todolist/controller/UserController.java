@@ -6,6 +6,7 @@ import com.todolist.todolist.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 
@@ -87,5 +88,27 @@ public class UserController {
     @PostMapping ("/register")
     public User registerUser (@RequestBody User userRequest){
         return userService.registerUser(userRequest.getEmail(), userRequest.getPassword());
+    }
+
+    @DeleteMapping("/account")
+    public ResponseEntity<String> deleteAccount(HttpSession session) {
+        // Look for the user object stored from login
+        User user = (User) session.getAttribute("user");
+
+        if(user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not logged in");
+        }
+
+        try {
+            // Pass the integer ID to the service
+            userService.deleteUserbyId(user.getId());
+
+            // Kill session so user is logged out
+            session.invalidate();
+
+            return ResponseEntity.ok("Account deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Could not delete account: " + e.getMessage());
+        }
     }
 }
