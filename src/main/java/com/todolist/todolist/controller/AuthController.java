@@ -5,6 +5,8 @@ import com.todolist.todolist.dto.AuthRequest;
 import com.todolist.todolist.model.User;
 import com.todolist.todolist.service.UserService;
 
+import java.util.Map;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -86,6 +88,27 @@ public class AuthController {
         HttpSession session = request.getSession(false);
         if (session != null) session.invalidate();
         return ResponseEntity.ok("Logged out");
+    }
+
+    @PostMapping("/forgot-password")
+public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> body) {
+    try {
+        userService.initiatePasswordReset(body.get("email"));
+        return ResponseEntity.ok("Reset email sent");
+    } catch (RuntimeException e) {
+        // Always return 200 so you don't reveal which emails exist
+        return ResponseEntity.ok("Reset email sent");
+    }
+}
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> body) {
+        try {
+            userService.resetPassword(body.get("token"), body.get("newPassword"));
+            return ResponseEntity.ok("Password updated successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     
