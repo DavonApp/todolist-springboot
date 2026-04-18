@@ -29,4 +29,19 @@ public class EmailService {
         mailSender.send(message);
 
     }
+
+    public void sendPasswordResetEmail (String toEmail, String token) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(toEmail);
+        message.setSubject("Reset your WorkCore password");
+        message.setText(
+            "Hi, \n\n" +
+            "You requested a password reset for your WorkCore account. \n\n" +
+            "Click the link below to reset your password (expires in 1 hour):\n\n" +
+            "http://localhost:5500/reset-password.html?token=" + token + "\n\n" +
+            "If you didn't request this, you can safefly ignore this email. \n\n" +
+            "- WorkCore"
+        );
+        mailSender.send(message);
+    }
 }
