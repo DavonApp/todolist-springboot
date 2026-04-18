@@ -12,8 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
@@ -21,7 +23,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class UserService {
     
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private TaskRepository taskRepository;
@@ -31,6 +38,38 @@ public class UserService {
     public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    public void initiatePasswordReset (String email) {
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("No account found."));
+
+        // Google users cannot reset their passwords this way
+        if ("GOOGLE".equals(user.getProvider())) {
+            throw new RuntimeException("This account uses Google login");
+        }  
+        
+        String token = UUID.randomUUID().toString();
+        user.setResetToken(token);
+        user.setResetTokenExpiry(LocalDateTime.now().plusHours(1));
+        userRepository.save(user);
+
+        emailService.sendPasswordResetEmail(user.getEmail(), token);
+    }
+
+    public void resetPassword (String token, String newPassword) {
+        User user = userRepository.findByResetToken(token)
+            .orElseThrow(() -> new RuntimeException("Invalid or expired reset link"));
+
+        if (user.getResetTokenExpiry().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Reset link has expired");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setResetToken(null); //invalidate token after use
+        user.setResetTokenExpiry(null);
+        user.setPasswordLastChanged(LocalDateTime.now());
+        userRepository.save(user);
     }
 
     public User registerUser (String email, String password){
