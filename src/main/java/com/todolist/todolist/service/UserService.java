@@ -72,12 +72,12 @@ public class UserService {
     }
 
     public User registerUser (String email, String password){
-        User existingUser = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-        if(existingUser != null){
+        // Check if email is already taken
+        if (userRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("User already exists");
-        } 
+        }
 
-        // Hash password before storing 
+        // Hash password before storing
         User user = new User(email, passwordEncoder.encode(password));
         userRepository.save(user);
         return user;
