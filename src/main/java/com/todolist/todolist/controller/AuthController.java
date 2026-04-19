@@ -25,6 +25,15 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
+    @GetMapping("/debug-env")
+    public ResponseEntity<?> debugEnv() {
+        return ResponseEntity.ok(java.util.Map.of(
+            "jwtSecret", System.getenv("JWT_SECRET") != null ? "SET" : "NOT SET",
+            "datasourceUrl", System.getenv("SPRING_DATASOURCE_URL") != null ? "SET" : "NOT SET",
+            "googleClientId", System.getenv("GOOGLE_CLIENT_ID") != null ? "SET" : "NOT SET"
+        ));
+    }
+
     @PostMapping("/register") 
         public ResponseEntity<?> register(@RequestBody AuthRequest req) {
             try {
