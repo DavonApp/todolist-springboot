@@ -59,7 +59,7 @@ public class TaskController {
         if (user == null) {
             throw new RuntimeException("Not logged in");
         }
-        taskService.deleteTask(id, getUserIdFromSession(session));
+        taskService.deleteTask(id, user.getId());
     }
 
     @PutMapping("/{id}")
