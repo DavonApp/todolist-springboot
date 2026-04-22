@@ -17,6 +17,7 @@ public class EmailService {
         
         SimpleMailMessage message = new SimpleMailMessage();
 
+        message.setFrom("workcore.app@gmail.com");
         message.setTo("workcore.app@gmail.com"); // Where the email will be recieved
         message.setSubject(form.getSubject());
 
@@ -38,7 +39,7 @@ public class EmailService {
             "Hi, \n\n" +
             "You requested a password reset for your WorkCore account. \n\n" +
             "Click the link below to reset your password (expires in 1 hour):\n\n" +
-            "http://localhost:5500/reset-password.html?token=" + token + "\n\n" +
+            "http://workcore-app.netlify.app/reset-password.html?token=" + token + "\n\n" +
             "If you didn't request this, you can safefly ignore this email. \n\n" +
             "- WorkCore"
         );
