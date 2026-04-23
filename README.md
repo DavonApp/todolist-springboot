@@ -128,6 +128,44 @@ Frontend → Controllers → Services → Repositories → PostgreSQL Database
 | POST   | /api/contact |
 
 ---
+## Database Design
+
+WorkCore uses a relational PostgreSQL database hosted on Supabase.
+
+### Relationships
+
+* One user can own many tasks
+* Each task belongs to one user
+
+### Users Table
+
+| Column              | Purpose              |
+| ------------------- | -------------------- |
+| id                  | Primary key          |
+| email               | User login email     |
+| password            | Encrypted password   |
+| name                | Display name         |
+| provider            | LOCAL or GOOGLE      |
+| providerId          | OAuth provider ID    |
+| passwordLastChanged | Security timestamp   |
+| resetToken          | Password reset token |
+| resetTokenExpiry    | Token expiration     |
+
+### Tasks Table
+
+| Column      | Purpose           |
+| ----------- | ----------------- |
+| id          | Primary key       |
+| title       | Task title        |
+| description | Task details      |
+| isCompleted | Completion status |
+| dueDate     | Due date          |
+| dueTime     | Due time          |
+| category    | Task grouping     |
+| priority    | Priority level    |
+| user_id     | Owner reference   |
+
+---
 
 ## Environment Variables
 
