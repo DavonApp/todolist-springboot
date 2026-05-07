@@ -112,7 +112,7 @@ public class UserController {
 
         try {
             // Pass the integer ID to the service
-            userService.deleteUserbyId(user.getId());
+            userService.deleteUserbyId(user.getAuthId());
 
             // Kill session so user is logged out
             session.invalidate();

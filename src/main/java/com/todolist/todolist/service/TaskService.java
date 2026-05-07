@@ -24,8 +24,8 @@ public class TaskService {
         this.userRepository = userRepository;
     }  
 
-    public List<Task> getTasksForUser(int userId) {
-        User user = userRepository.findById(userId)
+    public List<Task> getTasksForUser(String authId) {
+        User user = userRepository.findByAuthId(authId)
             .orElseThrow(() -> new RuntimeException("User not found"));
             return taskRepository.findByUser(user);
     }
@@ -35,15 +35,15 @@ public class TaskService {
                 .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
     }
 
-    public Task addTask(Task task, int userId) {
-        User user = userRepository.findById(userId)
+    public Task addTask(Task task, String authId) {
+        User user = userRepository.findByAuthId(authId)
             .orElseThrow(() -> new RuntimeException("User not found"));
             task.setUser(user);
             return taskRepository.save(task);
     }
 
-    public void deleteTask(int id, int userId) {
-        User user = userRepository.findById(userId)
+    public void deleteTask(int id, String authId) {
+        User user = userRepository.findByAuthId(authId)
             .orElseThrow(() -> new RuntimeException("Uesr not found"));
         Task task = taskRepository.findByIdAndUser(id, user)
             .orElseThrow(() -> new RuntimeException("Task not found or not yours"));
@@ -118,15 +118,15 @@ public class TaskService {
             taskRepository.save(task);
         }
     }
-    public void addTaskForUser(String title, int userId ){
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+    public void addTaskForUser(String title, String authId ){
+        User user = userRepository.findByAuthId(authId).orElseThrow(() -> new RuntimeException("User not found"));
         Task task = new Task(title);
         task.setUser(user);
         taskRepository.save(task);
     }
 
-    public void updateTask(int id, Task updatedTask, int userId){
-        User user = userRepository.findById(userId)
+    public void updateTask(int id, Task updatedTask, String authId){
+        User user = userRepository.findByAuthId(authId)
             .orElseThrow(() -> new RuntimeException("User not found"));
 
         Task existingTask = taskRepository.findByIdAndUser(id, user)
