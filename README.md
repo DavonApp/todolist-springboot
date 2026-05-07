@@ -129,6 +129,51 @@ Frontend → Controllers → Services → Repositories → PostgreSQL Database
 
 ---
 
+## Database Schema
+
+<img width="411" height="821" alt="Untitled" src="https://github.com/user-attachments/assets/24650a6a-7d7e-4c9e-8e3e-310a415d90e1" />
+
+---
+
+## Database Design
+
+WorkCore uses a relational PostgreSQL database hosted on Supabase.
+
+### Relationships
+
+* One user can own many tasks
+* Each task belongs to one user
+
+### Users Table
+
+| Column              | Purpose              |
+| ------------------- | -------------------- |
+| id                  | Primary key          |
+| email               | User login email     |
+| password            | Encrypted password   |
+| name                | Display name         |
+| provider            | LOCAL or GOOGLE      |
+| providerId          | OAuth provider ID    |
+| passwordLastChanged | Security timestamp   |
+| resetToken          | Password reset token |
+| resetTokenExpiry    | Token expiration     |
+
+### Tasks Table
+
+| Column      | Purpose           |
+| ----------- | ----------------- |
+| id          | Primary key       |
+| title       | Task title        |
+| description | Task details      |
+| isCompleted | Completion status |
+| dueDate     | Due date          |
+| dueTime     | Due time          |
+| category    | Task grouping     |
+| priority    | Priority level    |
+| user_id     | Owner reference   |
+
+---
+
 ## Environment Variables
 
 Create a `.env` or Render environment configuration:
