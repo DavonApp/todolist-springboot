@@ -143,8 +143,8 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUserbyId(String authId) {
-        User user = userRepository.findByAuthId(authId)
+    public void deleteUserbyId(int userId) {
+        User user = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("User not found"));
 
         // Delete all tasks belonging to this user

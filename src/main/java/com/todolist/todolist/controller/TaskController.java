@@ -27,13 +27,20 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    // Helper to extract userId from session - throws 401 if not logged in
+    private int getUserIdFromSession(HttpSession session) {
+        Integer userId = (Integer) session.getAttribute("userId");
+        if (userId == null) throw new RuntimeException("Not logged in");
+        return userId;
+    }
+
     @GetMapping
     public List<Task> getAllTasks(HttpServletRequest request, HttpSession session) {
         User user = authHelper.getCurrentUser(request, session);
         if (user == null) {
             throw new RuntimeException("Not logged in");
         }
-        return taskService.getTasksForUser(user.getAuthId());
+        return taskService.getTasksForUser(user.getId());
     }
     
 
@@ -43,7 +50,7 @@ public class TaskController {
         if (user == null) {
             throw new RuntimeException("Not logged in");
         }
-        return taskService.addTask(task, user.getAuthId());
+        return taskService.addTask(task, user.getId());
     }
 
     @DeleteMapping("/{id}")
@@ -52,7 +59,7 @@ public class TaskController {
         if (user == null) {
             throw new RuntimeException("Not logged in");
         }
-        taskService.deleteTask(id, user.getAuthId());
+        taskService.deleteTask(id, user.getId());
     }
 
     @PutMapping("/{id}")
@@ -63,6 +70,6 @@ public class TaskController {
 
             throw new RuntimeException("Not logged in");
         }
-        taskService.updateTask(id, updatedTask, user.getAuthId());
+        taskService.updateTask(id, updatedTask, user.getId());
     }
 }

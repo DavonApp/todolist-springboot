@@ -11,12 +11,9 @@ import java.util.ArrayList;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Column(name = "auth_id")
-    private String authId; // Supabase UUID
 
     // Fields
+    private int id;
     private String email;
     private String password;
     private LocalDateTime passwordLastChanged;
@@ -43,10 +40,6 @@ public class User {
     // Getters
     public int getId (){
         return id;
-    }
-
-    public String getAuthId() {
-        return authId;
     }
 
     public String getEmail (){
@@ -87,10 +80,6 @@ public class User {
     // Setters
     public void setId (int id){
         this.id = id;
-    }
-
-    public void setAuthId (String authId) {
-        this.authId = authId;
     }
 
     public void setEmail (String email){
